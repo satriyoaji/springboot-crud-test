@@ -1,6 +1,7 @@
 package com.ryo.springbootsimplerestapi.service;
 
 import com.ryo.springbootsimplerestapi.entity.Patient;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Optional;
 public interface PatientService {
     Patient save(Patient patient);
     Optional<Patient> findById(Long id);
-    List<Patient> search(String keyword, Pageable pageable);
+//    List<Patient> search(String keyword, Pageable pageable);
+    Page<Patient> search(String keyword, Pageable pageable);
     void delete(Long id);
 }
 

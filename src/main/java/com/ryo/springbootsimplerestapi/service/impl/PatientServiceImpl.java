@@ -4,6 +4,7 @@ import com.ryo.springbootsimplerestapi.entity.Patient;
 import com.ryo.springbootsimplerestapi.repository.PatientRepository;
 import com.ryo.springbootsimplerestapi.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
@@ -27,8 +28,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> search(String keyword, Pageable pageable) {
-        return patientRepository.searchByPidContaining(keyword, pageable);
+    public Page<Patient> search(String keyword, Pageable pageable) {
+        return patientRepository.findByPidContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(keyword, keyword, keyword, pageable);
     }
 
     @Override

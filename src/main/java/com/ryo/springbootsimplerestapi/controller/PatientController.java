@@ -3,6 +3,7 @@ package com.ryo.springbootsimplerestapi.controller;
 import com.ryo.springbootsimplerestapi.entity.Patient;
 import com.ryo.springbootsimplerestapi.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class PatientController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Patient>> searchPatients(@RequestParam String keyword, @PageableDefault(size = 10) Pageable pageable) {
-        List<Patient> patients = patientService.search(keyword, pageable);
-        return ResponseEntity.ok(patients);
+        Page<Patient> patients = patientService.search(keyword, pageable);
+        return ResponseEntity.ok(patients.getContent());
     }
 
     @DeleteMapping("/{id}")
