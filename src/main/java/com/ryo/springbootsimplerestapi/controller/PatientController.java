@@ -2,6 +2,7 @@ package com.ryo.springbootsimplerestapi.controller;
 
 import com.ryo.springbootsimplerestapi.entity.Patient;
 import com.ryo.springbootsimplerestapi.service.PatientService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,11 @@ import java.util.Optional;
 
 // PatientController.java
 @RestController
+@AllArgsConstructor
 @RequestMapping("api/patients")
 public class PatientController {
     private PatientService patientService;
-//    @Autowired
+
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients(Pageable pageable) {
         Page<Patient> patients =  patientService.getAllPatients(pageable);
