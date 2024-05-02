@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface PatientService {
     Patient save(Patient patient);
     Optional<Patient> findById(Long id);
+    Page<Patient> getAllPatients(Pageable pageable);
 //    List<Patient> search(String keyword, Pageable pageable);
     Page<Patient> search(String keyword, Pageable pageable);
     void delete(Long id);

@@ -28,6 +28,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Page<Patient> getAllPatients(Pageable pageable) {
+        return patientRepository.findAll(pageable);
+    }
+
+    @Override
     public Page<Patient> search(String keyword, Pageable pageable) {
         return patientRepository.findByPidContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(keyword, keyword, keyword, pageable);
     }
