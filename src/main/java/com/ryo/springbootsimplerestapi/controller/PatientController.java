@@ -2,22 +2,37 @@ package com.ryo.springbootsimplerestapi.controller;
 
 import com.ryo.springbootsimplerestapi.entity.Patient;
 import com.ryo.springbootsimplerestapi.service.PatientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 // PatientController.java
 @RestController
-@AllArgsConstructor
+//@AllArgsConstructor
 @RequestMapping("api/patients")
+@Validated
 public class PatientController {
-    private PatientService patientService;
+    private final PatientService patientService;
+
+    @Autowired
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients(Pageable pageable) {
@@ -26,9 +41,15 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
+    public ResponseEntity<?> createPatient(@Valid @RequestBody Patient patient) {
         Patient savedPatient = patientService.save(patient);
         return ResponseEntity.ok(savedPatient);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @Valid @RequestBody Patient updatedPatient) {
+        Patient updated = patientService.updatePatient(id, updatedPatient);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/{id}")
@@ -48,5 +69,14 @@ public class PatientController {
     public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
         patientService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Exception handler for validation errors
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(errors);
     }
 }

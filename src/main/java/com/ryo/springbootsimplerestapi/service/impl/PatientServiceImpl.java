@@ -23,6 +23,50 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Patient updatePatient(Long id, Patient updatedPatient) {
+        Optional<Patient> optionalPatient = patientRepository.findById(id);
+        if (optionalPatient.isPresent()) {
+            Patient existingPatient = optionalPatient.get();
+            // Update fields with non-null values from updatedPatient
+            if (updatedPatient.getPid() != null) {
+                existingPatient.setPid(updatedPatient.getPid());
+            }
+            if (updatedPatient.getFirstName() != null) {
+                existingPatient.setFirstName(updatedPatient.getFirstName());
+            }
+            if (updatedPatient.getLastName() != null) {
+                existingPatient.setLastName(updatedPatient.getLastName());
+            }
+            if (updatedPatient.getDateOfBirth() != null) {
+                existingPatient.setDateOfBirth(updatedPatient.getDateOfBirth());
+            }
+            if (updatedPatient.getGender() != null) {
+                existingPatient.setGender(updatedPatient.getGender());
+            }
+            if (updatedPatient.getAddress() != null) {
+                existingPatient.setAddress(updatedPatient.getAddress());
+            }
+            if (updatedPatient.getSuburb() != null) {
+                existingPatient.setSuburb(updatedPatient.getSuburb());
+            }
+            if (updatedPatient.getState() != null) {
+                existingPatient.setState(updatedPatient.getState());
+            }
+            if (updatedPatient.getPostcode() != null) {
+                existingPatient.setPostcode(updatedPatient.getPostcode());
+            }
+            if (updatedPatient.getPhoneNo() != null) {
+                existingPatient.setPhoneNo(updatedPatient.getPhoneNo());
+            }
+
+            // Save the updated patient
+            return patientRepository.save(existingPatient);
+        } else {
+            throw new IllegalArgumentException("Patient not found with ID: " + id);
+        }
+    }
+
+    @Override
     public Optional<Patient> findById(Long id) {
         return patientRepository.findById(id);
     }

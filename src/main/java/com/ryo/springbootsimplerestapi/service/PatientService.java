@@ -10,6 +10,7 @@ import java.util.Optional;
 // PatientService.java
 public interface PatientService {
     Patient save(Patient patient);
+    Patient updatePatient(Long id, Patient updatedPatient);
     Optional<Patient> findById(Long id);
     Page<Patient> getAllPatients(Pageable pageable);
 //    List<Patient> search(String keyword, Pageable pageable);
