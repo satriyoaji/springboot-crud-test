@@ -14,6 +14,10 @@ The following was discovered as part of building this project:
 ### Build Project
 `mvn clean package`
 
+### See the Swagger API Docs
+go to browser and visit `{base_url}/swagger-ui/index.html`
+*note: `{base_url}` for this example is like http://localhost:8000
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 
